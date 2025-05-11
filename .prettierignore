@@ -8,3 +8,4 @@ yarn.lock
 
 .prettierrc.js
 .eslintignore
+.eslint.boundaries.js

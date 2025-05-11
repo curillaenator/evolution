@@ -2401,33 +2401,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hierarchy@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "hierarchy@workspace:."
-  dependencies:
-    "@eslint/js": "npm:^9.25.0"
-    "@types/react": "npm:^19.1.2"
-    "@types/react-dom": "npm:^19.1.2"
-    "@vitejs/plugin-react": "npm:^4.4.1"
-    eslint: "npm:^9.25.0"
-    eslint-import-resolver-typescript: "npm:^4.3.4"
-    eslint-plugin-boundaries: "npm:^5.0.1"
-    eslint-plugin-react-hooks: "npm:^5.2.0"
-    eslint-plugin-react-refresh: "npm:^0.4.19"
-    globals: "npm:^16.0.0"
-    husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.0.0"
-    prettier: "npm:^3.5.3"
-    react: "npm:^19.1.0"
-    react-dom: "npm:^19.1.0"
-    react-router-dom: "npm:^7.6.0"
-    typescript: "npm:~5.8.3"
-    typescript-eslint: "npm:^8.30.1"
-    vite: "npm:^6.3.5"
-    vite-tsconfig-paths: "npm:^5.1.4"
-  languageName: unknown
-  linkType: soft
-
 "http-cache-semantics@npm:^4.1.1":
   version: 4.2.0
   resolution: "http-cache-semantics@npm:4.2.0"
@@ -3795,6 +3768,33 @@ __metadata:
   checksum: 10c0/ca670cb6d172f1c834950e4ec661e2055885df32fee3ebf3647c5df94993b7c2666a5dbc1c9a62ee11fc5c24928579ec5e81bb5ad31971d355d5a341aab493b3
   languageName: node
   linkType: hard
+
+"starting-pages@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "starting-pages@workspace:."
+  dependencies:
+    "@eslint/js": "npm:^9.25.0"
+    "@types/react": "npm:^19.1.2"
+    "@types/react-dom": "npm:^19.1.2"
+    "@vitejs/plugin-react": "npm:^4.4.1"
+    eslint: "npm:^9.25.0"
+    eslint-import-resolver-typescript: "npm:^4.3.4"
+    eslint-plugin-boundaries: "npm:^5.0.1"
+    eslint-plugin-react-hooks: "npm:^5.2.0"
+    eslint-plugin-react-refresh: "npm:^0.4.19"
+    globals: "npm:^16.0.0"
+    husky: "npm:^9.1.7"
+    lint-staged: "npm:^16.0.0"
+    prettier: "npm:^3.5.3"
+    react: "npm:^19.1.0"
+    react-dom: "npm:^19.1.0"
+    react-router-dom: "npm:^7.6.0"
+    typescript: "npm:~5.8.3"
+    typescript-eslint: "npm:^8.30.1"
+    vite: "npm:^6.3.5"
+    vite-tsconfig-paths: "npm:^5.1.4"
+  languageName: unknown
+  linkType: soft
 
 "statuses@npm:2.0.1, statuses@npm:^2.0.1":
   version: 2.0.1

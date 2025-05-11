@@ -1,17 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import { App } from "./App";
+import { App } from './App';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     Component: App,
     children: [
       {
         index: true,
         lazy: {
-          Component: async () =>
-            (await import("../features/mainpage/mainpage")).Component,
+          Component: async () => (await import('../pages/main/main.page')).Component,
         },
       },
     ],
