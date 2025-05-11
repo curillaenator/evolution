@@ -55,7 +55,7 @@ export interface paths {
         query?: never;
         header?: never;
         path: {
-          id: string;
+          itemId: string;
         };
         cookie?: never;
       };

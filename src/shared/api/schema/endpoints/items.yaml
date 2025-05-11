@@ -56,7 +56,7 @@ createItem:
 getItem:
   summary: Получение элемента иерархии по ID
   parameters:
-    - name: id
+    - name: itemId
       in: path
       required: true
       schema:
@@ -67,7 +67,7 @@ getItem:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Item'
+            $ref: '#/schemas/Item'
     '404':
       description: Элемент не найден
 
