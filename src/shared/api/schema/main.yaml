@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Herarchy API
+  description: Hierarchy items API
+  version: 1.0.0
+
+paths:
+  /hierarchy:
+    post:
+      $ref: './endpoints/items.yaml#/createItem'
+
+  /hierarchy/{itemId}:
+    get:
+      $ref: './endpoints/items.yaml#/getItem'
+
+    delete:
+      $ref: './endpoints/items.yaml#/deleteItem'

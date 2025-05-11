@@ -1,0 +1,86 @@
+schemas:
+  Item:
+    type: object
+    required:
+      - id
+      - parent
+      - name
+      - locked
+      - children
+    properties:
+      id:
+        type: string
+      parent:
+        type: string
+      name:
+        type: string
+      locked:
+        type: boolean
+      children:
+        type: array
+        items:
+          type: string
+      createdAt:
+        type: number
+      createdBy:
+        type: string
+      updatedAt:
+        type: number
+      updatedBy:
+        type: string
+
+  CreateItemPayload:
+    type: object
+    required:
+      - parentId
+      - item
+    properties:
+      parentId:
+        type: string
+        nullable: true
+      item:
+        $ref: '#/schemas/Item'
+
+createItem:
+  summary: Создание элемента иерархии
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/CreateItemPayload'
+  responses:
+    '201':
+      description: Элемент успешно создан
+
+getItem:
+  summary: Получение элемента иерархии по ID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Элемент найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Item'
+    '404':
+      description: Элемент не найден
+
+deleteItem:
+  summary: Удаление элемента с перемещением его детей
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Элемент удалён, дети перемещены
+    '404':
+      description: Элемент не найден
