@@ -12,12 +12,14 @@ schemas:
         type: string
       parent:
         type: string
+        nullable: true
       name:
         type: string
       locked:
         type: boolean
       children:
         type: array
+        nullable: true
         items:
           type: string
       createdAt:
@@ -53,6 +55,19 @@ createItem:
     '201':
       description: Элемент успешно создан
 
+getRoot:
+  summary: Получение root иерархии
+
+  responses:
+    '200':
+      description: Элемент найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/Item'
+    '404':
+      description: Элемент не найден
+
 getItem:
   summary: Получение элемента иерархии по ID
   parameters:
@@ -74,7 +89,7 @@ getItem:
 deleteItem:
   summary: Удаление элемента с перемещением его детей
   parameters:
-    - name: id
+    - name: itemId
       in: path
       required: true
       schema:
@@ -82,5 +97,9 @@ deleteItem:
   responses:
     '200':
       description: Элемент удалён, дети перемещены
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/Item'
     '404':
       description: Элемент не найден

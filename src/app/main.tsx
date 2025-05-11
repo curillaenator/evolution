@@ -7,10 +7,20 @@ import { QueryProvider } from './providers/QueryProvider';
 
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryProvider>
-      <RouterProvider router={router} />
-    </QueryProvider>
-  </StrictMode>,
-);
+async function enableMocks() {
+  if (import.meta.env.PROD) return;
+
+  const { worker } = await import('@/shared/api/mocks/browser');
+
+  return worker.start();
+}
+
+enableMocks().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <QueryProvider>
+        <RouterProvider router={router} />
+      </QueryProvider>
+    </StrictMode>,
+  );
+});

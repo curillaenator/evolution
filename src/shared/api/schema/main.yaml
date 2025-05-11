@@ -6,6 +6,9 @@ info:
 
 paths:
   /hierarchy:
+    get:
+      $ref: './endpoints/items.yaml#/getRoot'
+
     post:
       $ref: './endpoints/items.yaml#/createItem'
 

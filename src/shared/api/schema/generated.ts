@@ -11,7 +11,34 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /** Получение root иерархии */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Элемент найден */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Item'];
+          };
+        };
+        /** @description Элемент не найден */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
     put?: never;
     /** Создание элемента иерархии */
     post: {
@@ -87,7 +114,7 @@ export interface paths {
         query?: never;
         header?: never;
         path: {
-          id: string;
+          itemId: string;
         };
         cookie?: never;
       };
@@ -98,7 +125,9 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': components['schemas']['Item'];
+          };
         };
         /** @description Элемент не найден */
         404: {
@@ -120,10 +149,10 @@ export interface components {
   schemas: {
     Item: {
       id: string;
-      parent: string;
+      parent: string | null;
       name: string;
       locked: boolean;
-      children: string[];
+      children: string[] | null;
       createdAt?: number;
       createdBy?: string;
       updatedAt?: number;
