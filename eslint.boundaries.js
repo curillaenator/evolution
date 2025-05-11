@@ -25,6 +25,10 @@ export const eslintBoundariesConfig = {
         type: 'shared',
         pattern: './src/shared',
       },
+      {
+        type: 'entities',
+        pattern: './src/entities/*',
+      },
     ],
   },
 
@@ -37,7 +41,13 @@ export const eslintBoundariesConfig = {
         rules: [
           {
             from: 'shared',
-            disallow: ['app', 'features', 'pages'],
+            disallow: ['app', 'features', 'pages', 'entities'],
+            message:
+              'Модуль нижележащего слоя (${file.type}) не может импортировать модуль вышележащего слоя (${dependency.type})',
+          },
+          {
+            from: 'entities',
+            disallow: ['app', 'pages', 'features'],
             message:
               'Модуль нижележащего слоя (${file.type}) не может импортировать модуль вышележащего слоя (${dependency.type})',
           },
@@ -69,7 +79,7 @@ export const eslintBoundariesConfig = {
             allow: ['*.page.tsx'],
           },
           {
-            target: ['features'],
+            target: ['entities', 'features'],
             allow: ['index.(ts|tsx)'],
           },
         ],

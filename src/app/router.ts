@@ -1,11 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { Layout } from './layout';
 
-import { App } from './App';
+import { ROUTES } from '@/shared/routes';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    Component: App,
+    path: ROUTES.root,
+    Component: Layout,
     children: [
       {
         index: true,
