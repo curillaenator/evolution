@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { v4 as getId } from 'uuid';
 
 import { IconButton, Button, Flex, Text, Stack } from '@chakra-ui/react';
-import { IoRemoveOutline, IoAddOutline, IoCaretForwardOutline, IoDocumentOutline } from 'react-icons/io5';
+import { IoRemoveOutline, IoAddOutline, IoCaretForwardOutline, IoLogoReact } from 'react-icons/io5';
 
 import type { ApiSchemas } from '@/shared/api/schema';
 import { rqClient } from '@/shared/api/instance';
+
+import { useMenuContext } from './context';
 
 interface HierarchyElementProps {
   itemId: string;
@@ -20,13 +22,25 @@ const generateNewItem = (parentId: string | null): ApiSchemas['Item'] => {
 const HierarchyItem: React.FC<HierarchyElementProps> = ({ itemId }) => {
   const qc = useQueryClient();
 
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [touched, setTouched] = React.useState<boolean>(false);
+  const { state, setState } = useMenuContext();
+
+  const itemState = state[itemId];
+
+  // register state fot item
+  useEffect(() => {
+    setState((prev) => ({ ...prev, [itemId]: { isOpen: false, isMoving: false } }));
+  }, [itemId, setState]);
 
   const { data, isLoading } = rqClient.useQuery('get', `/hierarchy/{itemId}`, { params: { path: { itemId } } });
 
   const { mutate: createHierarchyUnit, isPending: isUnitCreating } = rqClient.useMutation('post', '/hierarchy', {
     onSuccess: async () => {
       await qc.invalidateQueries(rqClient.queryOptions('get', '/hierarchy/{itemId}', { params: { path: { itemId } } }));
+
+      if (!itemState.isOpen) {
+        setState((prev) => ({ ...prev, [itemId]: { ...prev[itemId], isOpen: true } }));
+      }
     },
   });
 
@@ -48,20 +62,25 @@ const HierarchyItem: React.FC<HierarchyElementProps> = ({ itemId }) => {
 
   const disabled = isLoading || isUnitDeleting || isUnitCreating;
 
-  if (!data) return null;
+  if (!data || !itemState) return null;
 
   return (
     <Stack as='li' w='full'>
-      <Flex w='full'>
+      <Flex w='full' onClick={() => setTouched(true)}>
         <IconButton
           size='sm'
           loading={isLoading}
           variant='ghost'
           style={{ flex: 'none' }}
-          onClick={() => setIsOpen((o) => !o)}
-          transform={isOpen ? 'rotate(90deg)' : 'rotate(0)'}
+          onClick={() =>
+            setState((prev) => ({
+              ...prev,
+              [itemId]: { ...prev[itemId], isOpen: !prev[itemId].isOpen },
+            }))
+          }
+          transform={itemState.isOpen ? 'rotate(90deg)' : 'rotate(0)'}
         >
-          {!!data.childrenIds.length ? <IoCaretForwardOutline /> : <IoDocumentOutline />}
+          {data.childrenIds.length ? <IoCaretForwardOutline /> : <IoLogoReact />}
         </IconButton>
 
         {!isLoading && (
@@ -101,8 +120,8 @@ const HierarchyItem: React.FC<HierarchyElementProps> = ({ itemId }) => {
         )}
       </Flex>
 
-      {isOpen && !!data.childrenIds.length && (
-        <Stack pl='4' as='ul' h='fit-content' gap={0}>
+      {touched && !!data.childrenIds.length && (
+        <Stack pl='4' as='ul' h={itemState.isOpen ? 'fit-content' : '0'} gap={0} overflow='hidden'>
           {data.childrenIds.map((childId) => (
             <HierarchyItem key={childId} itemId={childId} />
           ))}
