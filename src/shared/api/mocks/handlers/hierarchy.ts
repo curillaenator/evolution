@@ -3,50 +3,45 @@ import { http } from '../http';
 
 import type { ApiSchemas } from '../../schema';
 
-const ITEMS: ApiSchemas['Item'][] = [
-  {
-    id: '123',
-    parent: null,
-    name: 'Doc 2',
-    locked: false,
-    children: null,
-  },
-  {
-    id: '456',
-    parent: null,
-    name: 'Doc 1',
-    locked: false,
-    children: ['789'],
-  },
-  {
-    id: '789',
-    parent: '456',
-    name: 'Cool 2',
-    locked: false,
-    children: null,
-  },
-];
+interface MockDatabase {
+  ITEMS: ApiSchemas['Item'][];
+  ROOT: ApiSchemas['Item'];
+}
 
-const ROOT_ELEMENT: ApiSchemas['Item'] = {
-  id: 'hierarchy-root',
-  parent: null,
-  name: 'root',
-  locked: false,
-  children: ['123', '456'],
+const DB: MockDatabase = {
+  ITEMS: [
+    { id: '123', parentId: null, name: 'Doc 2', locked: false, childrenIds: [] },
+    { id: '456', parentId: null, name: 'Doc 1', locked: false, childrenIds: ['789'] },
+    { id: '789', parentId: '456', name: 'Cool 2', locked: false, childrenIds: [] },
+  ],
+
+  ROOT: {
+    id: 'hierarchy-root',
+    parentId: null,
+    name: 'root',
+    locked: false,
+    childrenIds: ['123', '456'],
+  },
 };
 
 const hierarchyHandlers = [
-  http.get('/hierarchy', () => HttpResponse.json(ROOT_ELEMENT)),
+  http.get('/hierarchy', () => HttpResponse.json(DB.ROOT)),
 
   http.get('/hierarchy/{itemId}', (ctx) => {
-    return HttpResponse.json(ITEMS.find((el) => el.id === ctx.params.itemId));
+    return HttpResponse.json(DB.ITEMS.find((el) => el.id === ctx.params.itemId));
   }),
 
   http.post('/hierarchy', async (ctx) => {
     const { item } = await ctx.request.json();
 
-    ITEMS.push(item);
-    ROOT_ELEMENT.children?.push(item.id);
+    DB.ITEMS.push(item);
+
+    if (item.parentId) {
+      const updIdx = DB.ITEMS.findIndex((el) => el.id === item.parentId);
+      DB.ITEMS[updIdx].childrenIds.push(item.id);
+    } else {
+      DB.ROOT.childrenIds.push(item.id);
+    }
 
     //@ts-expect-error reason
     return HttpResponse.json({ description: 'Элемент created' });
@@ -56,16 +51,34 @@ const hierarchyHandlers = [
     '/hierarchy/{itemId}',
     async (ctx) => {
       const { itemId } = await ctx.params;
-      const deleteIdx = ITEMS.findIndex((el) => el.id === itemId);
+      const itemsDeleteIdx = DB.ITEMS.findIndex((el) => el.id === itemId);
 
       //@ts-expect-error reason
-      if (deleteIdx < 0) return HttpResponse.json({ description: 'Элемент не найден' });
+      if (itemsDeleteIdx < 0) return HttpResponse.json({ description: 'Элемент не найден' });
 
-      const deleted = ITEMS.splice(deleteIdx, 1);
+      const itemToDelete = DB.ITEMS[itemsDeleteIdx];
 
-      ROOT_ELEMENT.children = (ROOT_ELEMENT.children || [])?.filter((childId) => childId !== itemId);
+      const { parentId, childrenIds } = itemToDelete;
 
-      return HttpResponse.json({ ...deleted[0] });
+      // removing item's children shifts their parentId
+      childrenIds.forEach((childId) => {
+        const tIdx = DB.ITEMS.findIndex((el) => el.id === childId);
+        DB.ITEMS[tIdx].parentId = parentId;
+      });
+
+      if (parentId) {
+        const targetParentIdx = DB.ITEMS.findIndex((el) => el.id === parentId);
+
+        DB.ITEMS[targetParentIdx].childrenIds = [...DB.ITEMS[targetParentIdx].childrenIds, ...childrenIds].filter(
+          (childId) => childId !== itemId,
+        );
+      } else {
+        DB.ROOT.childrenIds = [...DB.ROOT.childrenIds, ...childrenIds].filter((childId) => childId !== itemId);
+      }
+
+      DB.ITEMS.splice(itemsDeleteIdx, 1);
+
+      return HttpResponse.json(itemToDelete);
     },
     {},
   ),

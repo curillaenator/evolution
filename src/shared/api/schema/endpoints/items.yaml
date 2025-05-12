@@ -3,23 +3,22 @@ schemas:
     type: object
     required:
       - id
-      - parent
+      - parentId
       - name
       - locked
-      - children
+      - childrenIds
     properties:
       id:
         type: string
-      parent:
+      parentId:
         type: string
         nullable: true
       name:
         type: string
       locked:
         type: boolean
-      children:
+      childrenIds:
         type: array
-        nullable: true
         items:
           type: string
       createdAt:
@@ -34,12 +33,8 @@ schemas:
   CreateItemPayload:
     type: object
     required:
-      - parentId
       - item
     properties:
-      parentId:
-        type: string
-        nullable: true
       item:
         $ref: '#/schemas/Item'
 

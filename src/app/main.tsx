@@ -4,8 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import { router } from './router';
 import { QueryProvider } from './providers/QueryProvider';
-
-import './index.css';
+import { ChakraProvider } from './providers/ChakraProvider';
 
 async function enableMocks() {
   if (import.meta.env.PROD) return;
@@ -19,7 +18,9 @@ enableMocks().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryProvider>
-        <RouterProvider router={router} />
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
       </QueryProvider>
     </StrictMode>,
   );

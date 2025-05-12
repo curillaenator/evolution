@@ -1,19 +1,19 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { Hierarchy } from '@/features/hierarchy';
+import { Flex, Stack } from '@chakra-ui/react';
+
+import { Menu } from '@/features/menu';
 
 const Layout: React.FC = () => {
   return (
-    <div data-layout style={{ display: 'flex' }}>
-      <aside style={{ height: '100vh', width: '384px' }}>
-        <Hierarchy />
-      </aside>
+    <Flex data-layout h='100vh'>
+      <Menu />
 
-      <main>
+      <Stack as='main' flex='auto' maxH='100vh' overflow='auto'>
         <Outlet />
-      </main>
-    </div>
+      </Stack>
+    </Flex>
   );
 };
 
