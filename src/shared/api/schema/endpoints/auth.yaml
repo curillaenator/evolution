@@ -1,0 +1,35 @@
+schemas:
+  Creds:
+    type: object
+    requred:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+login:
+  summary: Login
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/Creds'
+  responses:
+    '201':
+      description: login success
+
+register:
+  summary: Register
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/Creds'
+  responses:
+    '201':
+      description: login success
