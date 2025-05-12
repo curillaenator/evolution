@@ -1,4 +1,15 @@
 schemas:
+  User:
+    type: object
+    requred:
+      - id
+      - email
+    properties:
+      id:
+        type: string
+      email:
+        type: string
+        format: email
   Creds:
     type: object
     requred:
@@ -7,8 +18,20 @@ schemas:
     properties:
       email:
         type: string
+        format: email
       password:
         type: string
+        format: password
+  AuthResponse:
+    type: object
+    requred:
+      - acccesToken
+      - user
+    properties:
+      acccesToken:
+        type: string
+      user:
+        $ref: '#/schemas/User'
 
 login:
   summary: Login
@@ -19,8 +42,14 @@ login:
         schema:
           $ref: '#/schemas/Creds'
   responses:
-    '201':
+    '200':
       description: login success
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/User'
+    '401':
+      $ref: 'common.yaml#/unauthorizedError'
 
 register:
   summary: Register
@@ -31,5 +60,11 @@ register:
         schema:
           $ref: '#/schemas/Creds'
   responses:
-    '201':
+    '200':
       description: login success
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/User'
+    '401':
+      $ref: 'common.yaml#/badRequestError'

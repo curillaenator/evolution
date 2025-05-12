@@ -1,6 +1,7 @@
 const ROUTES = {
   root: '/',
-  auth: '/auth',
+  login: '/auth/login',
+  register: '/auth/register',
 };
 
 export { ROUTES };

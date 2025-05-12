@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { VStack, Input, Field, HStack, Button, Text } from '@chakra-ui/react';
 
-import type { AuthFormField, AuthFormFields } from './interfaces';
+import type { AuthFormField, AuthFormFields, AuthFormProps } from './interfaces';
 
 const FORM_FILEDS: AuthFormField[] = [
   {
@@ -16,7 +16,7 @@ const FORM_FILEDS: AuthFormField[] = [
   },
 ];
 
-const AuthForm: React.FC = () => {
+const AuthForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -24,14 +24,7 @@ const AuthForm: React.FC = () => {
   } = useForm<AuthFormFields>();
 
   return (
-    <VStack
-      as='form'
-      gap={6}
-      w='768px'
-      onSubmit={handleSubmit((formData) => {
-        console.log('formData', formData);
-      })}
-    >
+    <VStack as='form' gap={6} w='768px' onSubmit={handleSubmit(onSubmit)}>
       {FORM_FILEDS.map(({ name, options }) => (
         <Field.Root key={name} invalid={!!errors[name]} w='full'>
           <Field.Label>

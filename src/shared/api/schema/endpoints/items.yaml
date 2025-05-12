@@ -49,6 +49,8 @@ createItem:
   responses:
     '201':
       description: Элемент успешно создан
+    '401':
+      $ref: 'common.yaml#/unauthorizedError'
 
 getRoot:
   summary: Получение root иерархии
@@ -60,8 +62,10 @@ getRoot:
         application/json:
           schema:
             $ref: '#/schemas/Item'
+    '401':
+      $ref: 'common.yaml#/unauthorizedError'
     '404':
-      description: Элемент не найден
+      $ref: 'common.yaml#/notFoundError'
 
 getItem:
   summary: Получение элемента иерархии по ID
@@ -78,8 +82,10 @@ getItem:
         application/json:
           schema:
             $ref: '#/schemas/Item'
+    '401':
+      $ref: 'common.yaml#/unauthorizedError'
     '404':
-      description: Элемент не найден
+      $ref: 'common.yaml#/notFoundError'
 
 deleteItem:
   summary: Удаление элемента с перемещением его детей
@@ -96,5 +102,7 @@ deleteItem:
         application/json:
           schema:
             $ref: '#/schemas/Item'
+    '401':
+      $ref: 'common.yaml#/unauthorizedError'
     '404':
-      description: Элемент не найден
+      $ref: 'common.yaml#/notFoundError'

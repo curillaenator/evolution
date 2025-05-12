@@ -19,6 +19,10 @@ paths:
     delete:
       $ref: './endpoints/items.yaml#/deleteItem'
 
-  /auth:
+  /auth/login:
     post:
       $ref: './endpoints/auth.yaml#/login'
+
+  /auth/register:
+    post:
+      $ref: './endpoints/auth.yaml#/register'

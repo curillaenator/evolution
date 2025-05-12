@@ -10,4 +10,8 @@ interface AuthFormField {
   options: RegisterOptions<AuthFormFields, keyof AuthFormFields>;
 }
 
-export type { AuthFormFields, AuthFormField };
+interface AuthFormProps {
+  onSubmit: (data: AuthFormFields) => void;
+}
+
+export type { AuthFormFields, AuthFormField, AuthFormProps };
