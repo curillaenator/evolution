@@ -65,7 +65,7 @@ const HierarchyItem: React.FC<HierarchyElementProps> = ({ itemId }) => {
   if (!data || !itemState) return null;
 
   return (
-    <Stack as='li' w='full'>
+    <Stack as='li' w='full' gap='0'>
       <Flex w='full' onClick={() => setTouched(true)}>
         <IconButton
           size='sm'

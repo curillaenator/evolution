@@ -41,7 +41,7 @@ const Menu: React.FC = () => {
           Aside head
         </Flex>
 
-        <Stack p='4' as='ul' flex='auto' gap={0} maxH='calc(100vh - 73px * 2)' overflow='auto'>
+        <Stack p='4' as='ul' flex='auto' gap='0' maxH='calc(100vh - 72px * 2)' overflow='auto'>
           {childrenIds?.map((childKey) => <HierarchyItem key={childKey} itemId={childKey} />)}
         </Stack>
 
